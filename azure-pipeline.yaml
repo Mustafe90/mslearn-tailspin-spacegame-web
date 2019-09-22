@@ -11,7 +11,35 @@ steps:
   inputs: 
     version: "2.x.x"
 
-    
+  task: Npm@1 
+  displayName: "Run Npm Install"
+  input:
+        command: "install"
+        verbose: true 
+     
+  #This task shoul really be handled by gulp
+  #By compiling the sass to css
+  #This can be a contribution that I can make to the ms-learn
+  #Hopefully simplifiying these sets of tasks to begins
+
+  script: "./node_modules/.bin/node-sass Tailspin.SpaceGame.Web/wwwroot --output Tailspin.SpaceGame.Web/wwwroot"
+  displayName: "Compile scss...literally mate...."
+
+  #You can make BuildInfor a variable
+  scripts: "'echo $(Build.DefinitionName) : $(Build.BuildId) : $(Build.BuildNumber)' > buildinfo.txt"
+  displayName: "Write Build Details into buildinfo.txt"
+  workingDirectory: Tailspin-SpaceGame.Web/wwwroot
+
+  task: gulp@1
+  displayName: "Run Gulp Task"
+
+  #You can also add a task to cach the nuget packages for the next run
+  task: DotnetCorCLI@2
+  displayName: "Restore Project dependencies"
+  input: 
+        command: "restore"
+        projects: "**/*.csproj"
+
   task: DotnetCoreCLI@2
   displayName: "Build the project"
   inputs:
