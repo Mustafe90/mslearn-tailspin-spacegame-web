@@ -1,2 +1,12 @@
 pool:
     vmImage: "Ubuntu-16.04"
+    demands: npm
+
+steps:
+#Donet Installer to enable us to install latest .net core pre-release version
+#This is useful because it enables us to be independent of Microsoft-Hosted agent
+  task: DotNetCoreInstaller@0 
+  displayName: "Use latest Stable .NET Core SDK"
+  inputs: 
+    version: "2.x"
+    
