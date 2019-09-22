@@ -9,7 +9,7 @@ steps:
   - task: DotNetCoreInstaller@0 
     displayName: "Use latest Stable .NET Core SDK"
     inputs: 
-      version: "2.2"
+      version: "2.2.5"
 
   - task: Npm@1 
     displayName: "Run Npm Install"
