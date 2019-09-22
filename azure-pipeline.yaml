@@ -8,5 +8,4 @@ steps:
   task: DotNetCoreInstaller@0 
   displayName: "Use latest Stable .NET Core SDK"
   inputs: 
-    version: "2.x"
-    
+    version: "2.x.x"
