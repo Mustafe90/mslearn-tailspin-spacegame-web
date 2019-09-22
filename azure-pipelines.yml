@@ -6,43 +6,44 @@ pool:
 steps:
 #Donet Installer to enable us to install latest .net core pre-release version
 #This is useful because it enables us to be independent of Microsoft-Hosted agent
-  task: DotNetCoreInstaller@0 
-  displayName: "Use latest Stable .NET Core SDK"
-  inputs: 
-    version: "2.x"
+  - task: DotNetCoreInstaller@0 
+    displayName: "Use latest Stable .NET Core SDK"
+    inputs: 
+      version: "2.x"
 
-  task: Npm@1 
-  displayName: "Run Npm Install"
-  input:
-        command: "install"
-        verbose: true 
+  - task: Npm@1 
+    displayName: "Run Npm Install"
+    inputs:
+          command: "install"
+          verbose: true 
      
   #This task shoul really be handled by gulp
   #By compiling the sass to css
   #This can be a contribution that I can make to the ms-learn
   #Hopefully simplifiying these sets of tasks to begins
 
-  script: "./node_modules/.bin/node-sass Tailspin.SpaceGame.Web/wwwroot --output Tailspin.SpaceGame.Web/wwwroot"
-  displayName: "Compile scss...literally mate...."
+  - script: "./node_modules/.bin/node-sass Tailspin.SpaceGame.Web/wwwroot --output Tailspin.SpaceGame.Web/wwwroot"
+    displayName: "Compile scss...literally mate...."
 
   #You can make BuildInfor a variable
-  scripts: "'echo $(Build.DefinitionName) : $(Build.BuildId) : $(Build.BuildNumber)' > buildinfo.txt"
-  displayName: "Write Build Details into buildinfo.txt"
-  workingDirectory: Tailspin-SpaceGame.Web/wwwroot
+  - script: "'echo $(Build.DefinitionName) : $(Build.BuildId) : $(Build.BuildNumber)' > buildinfo.txt"
+    displayName: "Write Build Details into buildinfo.txt"
+    workingDirectory: Tailspin-SpaceGame.Web/wwwroot
 
-  task: gulp@1
-  displayName: "Run Gulp Task"
+  - task: gulp@1
+    displayName: "Run Gulp Task"
 
   #You can also add a task to cach the nuget packages for the next run
-  task: DotnetCorCLI@2
-  displayName: "Restore Project dependencies"
-  input: 
-        command: "restore"
-        projects: "**/*.csproj"
+  - task: DotNetCoreCLI@2
+    displayName: "Restore Project dependencies"
+    inputs: 
+       command: "restore"
+       projects: "**/*.csproj"
 
-  task: DotnetCoreCLI@2
-  displayName: "Build the project"
-  inputs:
-         command: "build"
-         arguments: "--no-restore --configuration Release"
-         projects: "**/*.csproj"
+  - task: DotNetCoreCLI@2
+    displayName: 'Build the project'
+    inputs:
+          command: "build"
+          arguments: "--no-restore --configuration Release"
+          projects: "**/*.csproj"
+       
