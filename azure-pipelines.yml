@@ -56,7 +56,7 @@ steps:
     displayName: "Publish - $(buildConfiguration)"
     inputs:
           command: "publish"
-          arguments: "--no-build --configuration $(buildConfiguration) --ouput $(Build.ArtifactStagingDirectory)/$(buildConfiguration)"
+          arguments: "--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)"
           projects: "**/*.csproj"
           zipAfterPublish: true
 
