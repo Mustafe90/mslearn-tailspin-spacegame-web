@@ -3,13 +3,18 @@ pool:
     vmImage: "Ubuntu-16.04"
     demands: npm
 
+variables:
+  buildConfiguration: "Release"
+  wwwwrootDir:  "Tailspin.SpaceGame.Web/wwwroot"
+  sdkVersion: "2.1.505"
+
 steps:
 #Donet Installer to enable us to install latest .net core pre-release version
 #This is useful because it enables us to be independent of Microsoft-Hosted agent
   - task: DotNetCoreInstaller@0 
     displayName: "Use .NET Core SDK 2.1.505"
     inputs: 
-      version: 2.1.505
+      version: $(sdkVersion)
 
   - task: Npm@1 
     displayName: "Run Npm Install"
@@ -22,13 +27,13 @@ steps:
   #This can be a contribution that I can make to the ms-learn
   #Hopefully simplifiying these sets of tasks to begins
 
-  - script: "./node_modules/.bin/node-sass Tailspin.SpaceGame.Web/wwwroot --output Tailspin.SpaceGame.Web/wwwroot"
+  - script: "./node_modules/.bin/node-sass $(wwwwrootDir) --output $(wwwwrootDir)"
     displayName: "Compile scss...literally mate...."
 
   #You can make BuildInfor a variable
   - script: 'echo "$(Build.DefinitionName) : $(Build.BuildId) : $(Build.BuildNumber)" > buildinfo.txt'
     displayName: "Write Build Details into buildinfo.txt"
-    workingDirectory: Tailspin.SpaceGame.Web/wwwroot
+    workingDirectory: $(wwwwrootDir)
 
   - task: gulp@1
     displayName: "Run Gulp Task"
@@ -41,17 +46,17 @@ steps:
        projects: "**/*.csproj"
 
   - task: DotNetCoreCLI@2
-    displayName: 'Build the project'
+    displayName: 'Build the project - $(buildConfiguration)'
     inputs:
           command: "build"
-          arguments: "--no-restore --configuration Release"
+          arguments: "--no-restore --configuration $(buildConfiguration)"
           projects: "**/*.csproj"
     
   - task: DotNetCoreCLI@2
-    displayName: "Publish"
+    displayName: "Publish - $(buildConfiguration)"
     inputs:
           command: "publish"
-          arguments: "--no build --configuration release --ouput $(Build.ArtifactStagingDirectory)/Release"
+          arguments: "--no-build --configuration $(buildConfiguration) --ouput $(Build.ArtifactStagingDirectory)/$(buildConfiguration)"
           projects: "**/*.csproj"
           zipAfterPublish: true
 
