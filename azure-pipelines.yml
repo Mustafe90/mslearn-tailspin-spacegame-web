@@ -52,8 +52,9 @@ steps:
     inputs:
           command: "publish"
           arguments: "--no build --configuration release --ouput $(Build.ArtifactStagingDirectory)/Release"
+          projects: "**/*.csproj"
           zipAfterPublish: true
-          
+
   - task: PublishBuildArtifacts@1
     displayName: "Publish Artifiact : drop"
     condition: succeeded()
