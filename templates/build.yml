@@ -3,14 +3,14 @@ parameters:
 
 
 steps: 
-  - tasks: DotNetCoreCLI@2
+  - task: DotNetCoreCLI@2
     displayName: "Build the project - ${{ parameters.buildConfig }}"
      inputs:
       command: "build"
       arguments: "--no-restore --configuration ${{ parameters.buildConfig }}"
       projects: "**/*.csproj"
 
-  - tasks: DotNetCoreCLI@2
+  - task: DotNetCoreCLI@2
     displayName: "Publish the project - ${{ parameters.buildConfig }}"
      inputs:
       command: "publish"
