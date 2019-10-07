@@ -1,20 +1,20 @@
-paramters: 
+parameters: 
   buildConfig: "Release"
 
 
 steps: 
   -tasks: DotNetCoreCLI@2
-   displayName: "Build the project - ${{ paramters.buildConfig }}"
+   displayName: "Build the project - ${{ parameters.buildConfig }}"
    inputs:
       command: "build"
-      arguments: "--no-restore --configuration ${{ paramters.buildConfig }}"
+      arguments: "--no-restore --configuration ${{ parameters.buildConfig }}"
       projects: "**/*.csproj"
 
   -tasks: DotNetCoreCLI@2
-   displayName: "Publish the project - ${{ paramters.buildConfig }}"
+   displayName: "Publish the project - ${{ parameters.buildConfig }}"
    inputs:
       command: "publish"
-      arguments: "--no-build --configuration ${{ paramters.buildConfig }}"
+      arguments: "--no-build --configuration ${{ parameters.buildConfig }}"
       projects: "**/*.csproj"
       publishWebProjects: false
       zipAfterPublish: true
